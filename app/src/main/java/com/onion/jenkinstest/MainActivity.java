@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         name.setText("app名称:"+Utils.getApplicationName(this));
         fl.setText("app渠道:"+productFlavors);
         log.setText("是否开启日志:"+this.log);
-        branch.setText("这是master分支");
+        branch.setText("这是test分支");
     }
 
 
