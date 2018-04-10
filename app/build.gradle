@@ -1,0 +1,127 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+def APP_NAME_DEBUG = "Jenkins-test"
+def APP_NAME_RELEASE = "Jenkins"
+def APP_NAME_UAT = "Jenkins-uat"
+//debug模式
+def DEBUG = ISDEBUG.toBoolean()
+def VERSION = "2.0.2/"
+
+def API_RELEASE = "\"https://www.release.com/\""
+def API_UAT = "\"https://www.uat.com/\""
+def API_TEST = "\"https://www.test.com//\""
+
+def buildSystem = system.toString()
+def mac = "MacOs"
+def linux = "Linux"
+def windows = "Windows"
+
+android {
+
+    signingConfigs {
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+            keyAlias 'jenkins'
+            keyPassword 'jenkins'
+            if (mac.equals(buildSystem)) {
+                storeFile file('/Users/OnionMac/Desktop/jenkins.jks')
+            } else if (linux.equals(buildSystem)) {
+                storeFile file('/opt/android-jks/yhs.jks')
+            } else if (windows.equals(buildSystem)) {
+                storeFile file('D:/github/yhs.jks')
+            }
+            storePassword 'jenkins'
+        }
+    }
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.onion.jenkinstest"
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            buildConfigField("String", "API_HOST", "${API_RELEASE}")
+            buildConfigField("Boolean", "ISDEBUG", "${DEBUG}")
+        }
+
+        debug {
+
+            signingConfig signingConfigs.release
+//            applicationIdSuffix '.debug'
+            buildConfigField("String", "API_HOST", "${API_TEST}")
+            buildConfigField("Boolean", "ISDEBUG", "${DEBUG}")
+        }
+
+        uat {
+
+            signingConfig signingConfigs.release
+//            applicationIdSuffix '.uat'
+            buildConfigField("String", "API_HOST", "${API_UAT}")
+            buildConfigField("boolean", "ISDEBUG", "${DEBUG}")
+        }
+    }
+    productFlavors {
+        flavorDimensions "versionCode"
+        xiaomi {
+            signingConfig signingConfigs.release
+            manifestPlaceholders = [
+                    APP_NAME: "Jenkins-小米"
+            ]
+        }
+
+        huawei {
+            signingConfig signingConfigs.release
+            manifestPlaceholders = [
+                    APP_NAME: "Jenkins-华为"
+            ]
+        }
+
+        meizu {
+            signingConfig signingConfigs.release
+            manifestPlaceholders = [
+                    APP_NAME: "Jenkins-魅族"
+            ]
+        }
+    }
+
+    applicationVariants.all { variant ->
+        /**
+         * 如果是jenkins环境
+         */
+        if(jenkins.toBoolean()){
+            variant.getPackageApplication().outputDirectory = new File("${jenkinsFile}")
+            variant.getPackageApplication().outputScope.apkDatas.forEach { apkData ->
+                apkData.outputFileName = "Jenkins-" +
+                        rootProject.ext.android.versionName + "_" +
+                        variant.flavorName + "_" +
+                        ".apk"
+            }
+        }else{
+            variant.outputs.all {
+                outputFileName = "Jenkins-${versionName}.apk"
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
