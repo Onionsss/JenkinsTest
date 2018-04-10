@@ -25,11 +25,13 @@ public class MainActivity extends AppCompatActivity {
         TextView name = findViewById(R.id.name);
         TextView fl = findViewById(R.id.fl);
         TextView log = findViewById(R.id.log);
+        TextView branch = findViewById(R.id.branch);
 
         net.setText("网络地址:"+NET_ADDRESS);
         name.setText("app名称:"+Utils.getApplicationName(this));
         fl.setText("app渠道:"+productFlavors);
         log.setText("是否开启日志:"+this.log);
+        branch.setText("这是master分支");
     }
 
 
