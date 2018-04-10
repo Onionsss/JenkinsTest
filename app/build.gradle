@@ -13,7 +13,7 @@ def VERSION = "2.0.2/"
 
 def API_RELEASE = "\"https://www.release.com/\""
 def API_UAT = "\"https://www.uat.com/\""
-def API_TEST = "\"https://www.test.com//\""
+def API_TEST = "\"https://www.test.com/\""
 
 def buildSystem = system.toString()
 def mac = "MacOs"
@@ -57,7 +57,6 @@ android {
         }
 
         debug {
-
             signingConfig signingConfigs.release
 //            applicationIdSuffix '.debug'
             buildConfigField("String", "API_HOST", "${API_TEST}")
@@ -86,6 +85,7 @@ android {
             manifestPlaceholders = [
                     APP_NAME: "Jenkins-华为"
             ]
+
         }
 
         meizu {
@@ -93,6 +93,7 @@ android {
             manifestPlaceholders = [
                     APP_NAME: "Jenkins-魅族"
             ]
+
         }
     }
 
