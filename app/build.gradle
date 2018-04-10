@@ -31,7 +31,7 @@ android {
             if (mac.equals(buildSystem)) {
                 storeFile file('/Users/OnionMac/Desktop/jenkins.jks')
             } else if (linux.equals(buildSystem)) {
-                storeFile file('/opt/android-jks/yhs.jks')
+                storeFile file('/zhangqi/android-jks/jenkins.jks')
             } else if (windows.equals(buildSystem)) {
                 storeFile file('D:/github/yhs.jks')
             }
