@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         net.setText("网络地址:"+NET_ADDRESS);
         name.setText("app名称:"+Utils.getApplicationName(this));
         fl.setText("app渠道:"+productFlavors);
-        log.setText("是否开启日志:"+log);
+        log.setText("是否开启日志:"+this.log);
     }
 
 
